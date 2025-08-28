@@ -1,46 +1,98 @@
-# Nginx Gateway Project
+# Nginx como Proxy Reverso e Load Balancer com Docker Compose
 
-Este projeto demonstra o uso do Nginx como um gateway reverso para aplicações Node.js utilizando Docker.
+## 📄 Sobre o Projeto
 
-## Estrutura do Projeto
+Este projeto é um ambiente de demonstração prático que utiliza **Nginx** como **Proxy Reverso** e **Balanceador de Carga (Load Balancer)** para distribuir tráfego entre múltiplas instâncias de uma aplicação web simples. Toda a infraestrutura é orquestrada de forma declarativa e isolada usando **Docker Compose**.
 
-- `index.js`: Aplicação Node.js simples para teste.
-- `nginx/nginx.conf`: Arquivo de configuração do Nginx.
-- `Dockerfile`: Define a imagem customizada do Node.js.
-- `docker-compose.yml`: Orquestra os containers do Node.js e do Nginx.
-- `package.json`: Dependências e scripts do Node.js.
+O objetivo é ilustrar um cenário comum em arquiteturas de microsserviços e aplicações web escaláveis, onde um único ponto de entrada (Gateway) gerencia e distribui as requisições para os serviços backend.
 
-## Como executar
+-----
 
-1. **Clone o repositório:**
-   ```bash
-   git clone <url-do-repositorio>
-   cd ngnix-geteway
-   ```
-2. **Suba os containers:**
-   ```bash
-   docker-compose up --build
-   ```
-3. **Acesse a aplicação:**
-   Abra o navegador em [http://localhost:8080](http://localhost:8080)
+## 🏛️ Arquitetura
 
+O fluxo de requisições segue o seguinte modelo:
 
-## Como funciona
-- O Nginx recebe as requisições na porta 8080 e as encaminha para o container Node.js.
-- O Node.js responde e o Nginx retorna a resposta ao cliente.
+1.  O usuário faz uma requisição para `localhost:8080`.
+2.  O container do **Nginx** recebe essa requisição na sua porta `80`.
+3.  O Nginx, configurado com o método de balanceamento de carga **Round-Robin**, encaminha a requisição para uma das instâncias da aplicação backend.
+4.  A cada nova requisição, o Nginx alterna entre `app1` e `app2`, distribuindo a carga de forma equitativa.
 
-## Balanceamento de carga (Load Balancing)
-O Nginx está configurado para atuar como um balanceador de carga, distribuindo as requisições entre múltiplas instâncias da aplicação Node.js. Isso é feito através do bloco `upstream` no arquivo `nginx/nginx.conf`:
+-----
 
-```nginx
-upstream backend_servers {
-   server app1:3000;
-   server app2:3000;
-}
+## 🛠️ Tecnologias Utilizadas
+
+  * **Nginx:** Servidor web de alta performance, atuando como Proxy Reverso e Load Balancer.
+  * **Docker & Docker Compose:** Para containerização da aplicação e orquestração do ambiente.
+  * **Node.js & Express:** Para a criação da aplicação web backend de exemplo.
+
+-----
+
+## 📁 Estrutura de Arquivos
+
+```
+.
+├── app/                  # Contém a aplicação backend Node.js
+│   ├── Dockerfile        # Define como construir a imagem da aplicação
+│   ├── index.js          # O código do servidor Express
+│   └── package.json      # Dependências da aplicação
+├── nginx/                # Contém a configuração do Nginx
+│   └── nginx.conf        # Define o proxy reverso e o upstream para load balancing
+└── docker-compose.yml    # Arquivo principal que orquestra todos os serviços
 ```
 
-Com essa configuração, o Nginx distribui automaticamente as requisições entre os servidores listados, melhorando a performance e a disponibilidade da aplicação. É possível adicionar ou remover servidores conforme a necessidade.
+-----
 
-## Licença
+## 🚀 Como Executar o Projeto
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+Siga os passos abaixo para executar o ambiente em sua máquina local.
+
+### Pré-requisitos
+
+  * Você precisa ter o **[Docker](https://www.docker.com/products/docker-desktop/)** e o **Docker Compose** instalados. (O Docker Compose já vem incluído no Docker Desktop para Windows e Mac).
+
+### Passo a Passo
+
+1.  **Clone o repositório:**
+
+    ```bash
+    git clone https://github.com/seu-usuario/seu-repositorio.git
+    ```
+
+2.  **Navegue até o diretório do projeto:**
+
+    ```bash
+    cd seu-repositorio
+    ```
+
+3.  **Inicie o ambiente com Docker Compose:**
+
+    ```bash
+    docker-compose up --build -d
+    ```
+
+      * `--build`: Garante que as imagens Docker serão construídas a partir do Dockerfile.
+      * `-d`: Executa os containers em modo "detached" (em segundo plano).
+
+-----
+
+## ✅ Verificação
+
+Após executar o comando `docker-compose up`, o ambiente estará pronto\!
+
+1.  **Acesse o navegador:**
+    Abra seu navegador e visite [**http://localhost:8080**](https://www.google.com/search?q=http://localhost:8080).
+
+2.  **Teste o Load Balancer:**
+    Você verá uma mensagem como *"Esta requisição foi processada pelo container: [ID do Container]"*.
+
+    **Recarregue a página (pressionando F5 ou Ctrl+R) várias vezes.** Você notará que o ID do container que responde à requisição irá alternar a cada recarga, provando que o Nginx está distribuindo o tráfego entre as duas instâncias da aplicação.
+
+**Exemplo de Funcionamento:**
+
+*(Sugestão: grave um GIF rápido da sua tela mostrando a atualização e coloque aqui\!)*
+
+-----
+
+## 👨‍💻 Autor
+
+Feito por **Matheuss Henrique**.
