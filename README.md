@@ -86,11 +86,6 @@ Após executar o comando `docker-compose up`, o ambiente estará pronto\!
     Você verá uma mensagem como *"Esta requisição foi processada pelo container: [ID do Container]"*.
 
     **Recarregue a página (pressionando F5 ou Ctrl+R) várias vezes.** Você notará que o ID do container que responde à requisição irá alternar a cada recarga, provando que o Nginx está distribuindo o tráfego entre as duas instâncias da aplicação.
-
-**Exemplo de Funcionamento:**
-
-*(Sugestão: grave um GIF rápido da sua tela mostrando a atualização e coloque aqui\!)*
-
 -----
 
 ## 👨‍💻 Autor
