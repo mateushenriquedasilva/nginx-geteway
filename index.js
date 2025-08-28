@@ -8,14 +8,9 @@ const containerId = os.hostname();
 
 app.get("/", (req, res) => {
   console.log(`request received by the container: ${containerId}`);
-  res.send(`
-		<html>
-			<body>
-					<h1>Load Balancer!</h1>
-					<p>this request was processed by the container: ${containerId}</p>
-			</body>
-		</html>
-		`);
+  res.json({
+		msg: `this request was processed by the container: ${containerId}`
+	});
 });
 
 app.listen(PORT, () => {
